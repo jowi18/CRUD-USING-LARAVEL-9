@@ -62,43 +62,46 @@
             
                 @unless ($data->isEmpty())
          
-              @foreach ($data as $key=>$u )
+              @foreach ($data as $u )
+                 @foreach ($u->userinfo as $key=>$user)
+                
+              
                 <tr>
                   <td>
                     {{ $key + 1 }}
                   </td>
                   <td>
-                    {{ $u->name }}
+                    {{ $user->name }}
                   </td>
                   <td>
-                    {{ $u->position }}
+                    {{ $user->position }}
                   </td>
                   <td>
-                    {{ $u->email }}
+                    {{ $user->email }}
                   </td>
                   <td class="text-right">
-                    {{ $u->address }}
+                    {{ $user->address }}
                   </td>
                   <td class="text-right">
-                    {{ $u->company }}
+                    {{ $user->company }}
                   </td>
                   <td class="text-right">
-                    {{ date('F d, Y',strtotime($u->created_at)) }}
+                    {{ date('F d, Y',strtotime($user->created_at)) }}
                   </td>
                   <td class="text-right">
-                    <a href="/userinfo/edit/{{ $u->id }}"><button class="btn btn-primary">
+                    <a href="/userinfo/edit/{{ $user->id }}"><button class="btn btn-primary">
                       Edit</button></a>
 
                    
                   </td>
                   <td>
-                    <form id="delete-form{{ $u->id }}" method="POST" action="/userinfo/delete/{{ $u->id }}" >
+                    <form id="delete-form{{ $user->id }}" method="POST" action="/userinfo/delete/{{ $user->id }}" >
                         @csrf
                         @method('DELETE')
                   </form>
                   <a href="#" onclick="if(confirm('Do you want to delete?')){        
                         event.preventDefault();
-                        document.getElementById('delete-form{{ $u->id }}').submit()
+                        document.getElementById('delete-form{{ $user->id }}').submit()
                     }else{
                         event.preventDefault();
                     }
@@ -108,7 +111,7 @@
                     
                 </tr>
               
-              
+                @endforeach
                 @endforeach
               
                 @else

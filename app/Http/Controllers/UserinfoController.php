@@ -9,17 +9,21 @@ class UserinfoController extends Controller
 {
     public function index(){
         $user = Userinformation::latest()->filter(request(['search']))->paginate(6);
-        //return view('admins.index', ['data' => auth()->user()->userinfo()->get()]);
-       
+     
         return view('admins.index', ['data' => $user]);    
  
     }
 
     public function manage(){
-        $data = Userinformation::latest()->filter(request(['search']));
-        return view('admins.manage', ['data' => auth()->user()->userinfo()->get()]);
+        $id = auth()->id();
+        $account = User::with(['userinfo' => function($q){
+            $q->orderBy('created_at', 'desc');
+            $q->filter(request(['search']));
+        }])->where('id', $id)->get();
+           
+            
        
-        //return view('admins.manage', ['data' => $user]);    
+        return view('admins.manage', ['data' => $account]);    
  
     }
 
